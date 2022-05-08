@@ -73,18 +73,9 @@ blocks.forEach(updateGrid)
 drawCage()
 
 // Handle moving
-
-canvas.addEventListener('pointerdown', function(e) {
-    getBlock(canvas, e)
-})
-
-canvas.addEventListener('pointermove', function(e) {
-    moveBlock(canvas, e)
-})
-
-canvas.addEventListener('pointerup', function(e) {
-    confirmMove(canvas, e)
-})
+canvas.addEventListener('pointerdown',getBlock)
+canvas.addEventListener('pointermove', moveBlock)
+canvas.addEventListener('pointerup', confirmMove)
 
 
 // Function definitions
@@ -187,7 +178,7 @@ function updateGrid(block, index) {
 
 var initialX
 var initalY
-function getBlock(canvas, event) {
+function getBlock() {
     const rect = canvas.getBoundingClientRect()
     initialX = event.clientX - rect.left
     initialY = event.clientY - rect.top
@@ -203,7 +194,7 @@ function getBlock(canvas, event) {
 var tempX
 var tempY
 
-function moveBlock(canvas, event) {
+function moveBlock() {
 
     if (selectedBlock >= 0) {
         var leftBound = 0
@@ -266,7 +257,7 @@ function moveBlock(canvas, event) {
 }
 
 var interval
-function confirmMove(canvas, event) {
+function confirmMove() {
     if (selectedBlock >= 0) {
         if (blocks[selectedBlock]["orientation"] == 0) {
             if (blocks[selectedBlock]["x"] != Math.round(tempX)) {
@@ -307,6 +298,9 @@ function gameOver() {
         blocks.forEach(drawBlocks)
         drawCage()
         selectedBlock = -1
+        canvas.removeEventListener('pointerdown',getBlock)
+        canvas.removeEventListener('pointermove', moveBlock)
+        canvas.removeEventListener('pointerup', confirmMove)
     }
 }
 
