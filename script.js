@@ -1,6 +1,7 @@
-var canvas = document.getElementById("myCanvas");
-var ctx = canvas.getContext("2d");
-
+var canvas = document.getElementById("myCanvas")
+var ctx = canvas.getContext("2d")
+canvas.width = 0.8 * window.innerWidth
+canvas.height = canvas.width
 let unitHeight = canvas.height/6
 let unitWidth = canvas.width/6
 
@@ -72,15 +73,16 @@ blocks.forEach(updateGrid)
 drawCage()
 
 // Handle moving
-canvas.addEventListener('mousedown', function(e) {
+
+canvas.addEventListener('pointerdown', function(e) {
     getBlock(canvas, e)
 })
 
-canvas.addEventListener('mousemove', function(e) {
+canvas.addEventListener('pointermove', function(e) {
     moveBlock(canvas, e)
 })
 
-canvas.addEventListener('mouseup', function(e) {
+canvas.addEventListener('pointerup', function(e) {
     confirmMove(canvas, e)
 })
 
@@ -189,8 +191,12 @@ function getBlock(canvas, event) {
     const rect = canvas.getBoundingClientRect()
     initialX = event.clientX - rect.left
     initialY = event.clientY - rect.top
-    var selectedX = Math.floor(initialX/60)
-    var selectedY = Math.floor(initialY/60)
+    console.log(initialX)
+    console.log(initialY)
+    var selectedX = Math.floor(initialX/unitWidth)
+    var selectedY = Math.floor(initialY/unitHeight)
+    console.log(selectedX)
+    console.log(selectedY)
     selectedBlock = grid[selectedX][selectedY]
 }
 
@@ -198,6 +204,7 @@ var tempX
 var tempY
 
 function moveBlock(canvas, event) {
+
     if (selectedBlock >= 0) {
         var leftBound = 0
         for (var lb = blocks[selectedBlock]["x"]; lb > 0; lb--) {
@@ -272,8 +279,9 @@ function confirmMove(canvas, event) {
                 movesTaken++
             }
             blocks[selectedBlock]["y"] = Math.round(tempY)
-        }  
+        }
     }
+    document.getElementById("score").innerHTML = movesTaken;
     selectedBlock = -1
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     blocks.forEach(drawBlocks)
