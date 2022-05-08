@@ -1,6 +1,6 @@
 var canvas = document.getElementById("myCanvas")
 var ctx = canvas.getContext("2d")
-canvas.width = 0.8 * window.innerWidth
+canvas.width = 0.95 * window.innerWidth
 canvas.height = canvas.width
 let unitHeight = canvas.height/6
 let unitWidth = canvas.width/6
