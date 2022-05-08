@@ -69,7 +69,10 @@ var blocks = data["blocks"]
 // Initial setup
 blocks.forEach(drawBlocks)
 blocks.forEach(updateGrid)
+var emojiBoard = ""
+createEmojiBoard()
 drawCage()
+
 
 // Handle moving
 canvas.addEventListener('pointerdown', getBlock)
@@ -172,6 +175,21 @@ function updateGrid(block, index) {
     }
 }
 
+function createEmojiBoard() {
+    for (var y = 0; y < 6; y++) {
+        for (var x = 0; x < 6; x++) {
+            if (grid[x][y] == -1) {
+                emojiBoard += "⬜️"
+            } else if (grid[x][y] == 0) {
+                emojiBoard += "🟥"
+            } else {
+                emojiBoard += "🟧"
+            }
+        }
+        emojiBoard += "\n"
+    }
+}
+
 var initialX
 var initalY
 
@@ -179,12 +197,8 @@ function getBlock() {
     const rect = canvas.getBoundingClientRect()
     initialX = event.clientX - rect.left
     initialY = event.clientY - rect.top
-    console.log(initialX)
-    console.log(initialY)
     var selectedX = Math.floor(initialX / unitWidth)
     var selectedY = Math.floor(initialY / unitHeight)
-    console.log(selectedX)
-    console.log(selectedY)
     selectedBlock = grid[selectedX][selectedY]
 }
 
@@ -279,6 +293,28 @@ function confirmMove() {
     }
 }
 
+function openModal() {
+    document.getElementById("gameOver").style.display = "block"
+}
+
+function closeModal() {
+    document.getElementById("gameOver").style.display = "none"
+}
+
+var modal = document.getElementById('gameOver');
+
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function (event) {
+    if (event.target == modal) {
+        closeModal()
+    }
+}
+
+var span = document.getElementsByClassName("close")[0];
+span.onclick = function() {
+  modal.style.display = "none";
+}
+
 var elapsed = 0
 
 function gameOver() {
@@ -296,5 +332,27 @@ function gameOver() {
         canvas.removeEventListener('pointerdown', getBlock)
         canvas.removeEventListener('pointermove', moveBlock)
         canvas.removeEventListener('pointerup', confirmMove)
+        document.getElementById("movesTaken").innerHTML = "Moves Taken: " + movesTaken
+        document.getElementById("optimal").innerHTML = "Optimal # of Moves: " + optimalMoveNum
+        document.getElementById("emoji").innerHTML = emojiBoard;
+        openModal()
     }
 }
+
+const shareData = {
+    title: 'Hello',
+    text: 'Learn web development on MDN!',
+    url: 'https://blockle.io'
+  }
+
+  const btn = document.querySelector('button');
+
+  // Share must be triggered by "user activation"
+  btn.addEventListener('click', async () => {
+    try {
+      await navigator.share(shareData)
+      console.log("succ")
+    } catch(err) {
+      console.log("fail")
+    }
+  });

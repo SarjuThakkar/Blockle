@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -15,6 +16,15 @@
     <h1>Blockle</h1>
     <canvas id="myCanvas"></canvas>
     <h1 id="score">0</h1>
+    <div id="gameOver" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <p>Statistics</p>
+            <p id="movesTaken">Moves Taken: 0</p>
+            <p id="optimal">Optimal # of Moves: 0</p>
+            <p id="emoji">boardEmoji</p>
+            <button type="button">Share</button>
+        </div>
+    </div>
     <script type="text/javascript" src="script.js"></script>
-
 </body></html>
