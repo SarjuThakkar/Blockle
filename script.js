@@ -21,6 +21,7 @@ var grid = [
 // First block is main red block
 // Orientation 0 for horizontal and 1 for vertical
 const data = {
+    day: 1,
     moves: 3,
     blocks: [
         {
@@ -63,6 +64,7 @@ const data = {
 }
 
 // load in data
+let blockleNum = data["day"]
 let optimalMoveNum = data["moves"]
 var blocks = data["blocks"]
 
@@ -311,8 +313,8 @@ window.onclick = function (event) {
 }
 
 var span = document.getElementsByClassName("close")[0];
-span.onclick = function() {
-  modal.style.display = "none";
+span.onclick = function () {
+    modal.style.display = "none";
 }
 
 var elapsed = 0
@@ -340,19 +342,13 @@ function gameOver() {
 }
 
 const shareData = {
-    title: 'Hello',
-    text: 'Learn web development on MDN!',
+    text: 'Blockle #' + blockleNum + '  Moves: ' + movesTaken + '\n' + emojiBoard,
     url: 'https://blockle.io'
-  }
+}
 
-  const btn = document.querySelector('button');
+const btn = document.querySelector('button');
 
-  // Share must be triggered by "user activation"
-  btn.addEventListener('click', async () => {
-    try {
-      await navigator.share(shareData)
-      console.log("succ")
-    } catch(err) {
-      console.log("fail")
-    }
-  });
+// Share must be triggered by "user activation"
+btn.addEventListener('click', async () => {
+    await navigator.share(shareData)
+});
