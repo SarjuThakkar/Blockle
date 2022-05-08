@@ -22,42 +22,78 @@ var grid = [
 // Orientation 0 for horizontal and 1 for vertical
 const data = {
     day: 1,
-    moves: 3,
+    moves: 32,
     blocks: [
         {
             orientation: 0,
+            x: 1,
+            y: 2,
+            length: 2
+        },
+        {
+            orientation: 0,
+            x: 0,
+            y: 0,
+            length: 3
+        },
+        {
+            orientation: 0,
+            x: 0,
+            y: 1,
+            length: 2
+        },
+        {
+            orientation: 1,
             x: 0,
             y: 2,
             length: 2
         },
         {
             orientation: 1,
-            x: 1,
+            x: 3,
+            y: 0,
+            length: 3
+        },
+        {
+            orientation: 1,
+            x: 4,
+            y: 0,
+            length: 3
+        },
+        {
+            orientation: 1,
+            x: 5,
             y: 0,
             length: 2
         },
         {
             orientation: 1,
-            x: 2,
+            x: 5,
             y: 2,
             length: 2
         },
         {
-            orientation: 1,
-            x: 0,
-            y: 4,
+            orientation: 0,
+            x: 2,
+            y: 3,
             length: 2
         },
         {
             orientation: 1,
-            x: 4,
-            y: 1,
+            x: 2,
+            y: 4,
             length: 2
         },
         {
             orientation: 0,
             x: 3,
             y: 4,
+            length: 3
+        },
+        {
+            orientation: 0,
+            x: 3,
+            y: 5,
             length: 3
         }
     ]
@@ -318,6 +354,7 @@ span.onclick = function () {
 }
 
 var elapsed = 0
+var shareData
 
 function gameOver() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -338,12 +375,11 @@ function gameOver() {
         document.getElementById("optimal").innerHTML = "Optimal # of Moves: " + optimalMoveNum
         document.getElementById("emoji").innerHTML = emojiBoard;
         openModal()
+        shareData = {
+            text: 'Blockle #' + blockleNum + '  Moves: ' + movesTaken + '\n' + emojiBoard,
+            url: 'https://blockle.io'
+        }
     }
-}
-
-const shareData = {
-    text: 'Blockle #' + blockleNum + '  Moves: ' + movesTaken + '\n' + emojiBoard,
-    url: 'https://blockle.io'
 }
 
 const btn = document.querySelector('button');
