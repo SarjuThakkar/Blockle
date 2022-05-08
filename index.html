@@ -4,7 +4,7 @@
 <head>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Roboto&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <meta charset="utf-8" />
     <link rel="stylesheet" href="stylesheet.css">
@@ -13,7 +13,16 @@
 </head>
 
 <body>
-
+    <div id="rules" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <p>How to Play</p>
+            <p class="rule">The objective of the game is to move the red block all the way to the exit at the right of the board.</p>
+            <p class="rule">You have to clear the path and move the blocks out of the way.</p>
+            <p class="rule"> Vertical blocks can only move up and down. Horizontal blocks can only move left and right.</p>
+            <p class="rule"> Try to unblock the red block in as few moves as possible!</p>
+        </div>
+    </div>
     <h1>Blockle</h1>
     <canvas id="myCanvas"></canvas>
     <h1 id="score">0</h1>

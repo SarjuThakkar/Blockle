@@ -110,6 +110,7 @@ blocks.forEach(updateGrid)
 var emojiBoard = ""
 createEmojiBoard()
 drawCage()
+openModalRules()
 
 
 // Handle moving
@@ -119,6 +120,28 @@ canvas.addEventListener('pointerup', confirmMove)
 
 
 // Function definitions
+function openModalRules() {
+    document.getElementById("rules").style.display = "block"
+}
+
+function closeModalRules() {
+    document.getElementById("rules").style.display = "none"
+}
+
+var rulesModal = document.getElementById('rules');
+
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function (event) {
+    if (event.target == rulesModal) {
+        closeModalRules()
+    }
+}
+
+var span = document.getElementsByClassName("close")[0];
+span.onclick = function () {
+    rulesModal.style.display = "none";
+}
+
 function drawBlocks(block, index) {
     if (index != selectedBlock) {
         var blockHeight
@@ -160,6 +183,12 @@ function drawCage() {
     ctx.lineTo(canvas.width, canvas.height);
     ctx.stroke();
     ctx.lineTo(canvas.width, 3 * unitHeight);
+    ctx.stroke();
+    ctx.closePath()
+    ctx.beginPath()
+    ctx.moveTo(canvas.width, 2 * unitHeight);
+    ctx.lineTo(canvas.width, 3 * unitHeight);
+    ctx.strokeStyle = "#FFFFFF"
     ctx.stroke();
     ctx.closePath()
 }
@@ -348,7 +377,7 @@ window.onclick = function (event) {
     }
 }
 
-var span = document.getElementsByClassName("close")[0];
+var span = document.getElementsByClassName("close")[1];
 span.onclick = function () {
     modal.style.display = "none";
 }
