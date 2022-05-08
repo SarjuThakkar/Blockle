@@ -33,6 +33,23 @@ button:hover {
     transition-duration: 0.1s;
 }
 
+body {
+    text-align: center;
+}
+
+a {
+    position: fixed;
+    bottom: 0px;
+}
+
+.fa {
+    transform: translateX(-50%);
+}
+
+#github {
+    color: black;
+    font-size: 3rem;
+}
 
 p {
     text-align: center;
@@ -47,7 +64,6 @@ p {
 }
 
 h1 {
-    text-align: center;
     font-family: Alfa Slab One;
     font-size: 3rem;
     margin: 0.5rem;
