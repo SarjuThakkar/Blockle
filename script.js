@@ -2,8 +2,8 @@ var canvas = document.getElementById("myCanvas")
 var ctx = canvas.getContext("2d")
 canvas.width = 0.95 * window.innerWidth
 canvas.height = canvas.width
-let unitHeight = canvas.height/6
-let unitWidth = canvas.width/6
+let unitHeight = canvas.height / 6
+let unitWidth = canvas.width / 6
 
 var movesTaken = 0
 // State Variables
@@ -20,8 +20,7 @@ var grid = [
 // Change daily inital postions
 // First block is main red block
 // Orientation 0 for horizontal and 1 for vertical
-const data = 
-{
+const data = {
     moves: 3,
     blocks: [
         {
@@ -73,7 +72,7 @@ blocks.forEach(updateGrid)
 drawCage()
 
 // Handle moving
-canvas.addEventListener('pointerdown',getBlock)
+canvas.addEventListener('pointerdown', getBlock)
 canvas.addEventListener('pointermove', moveBlock)
 canvas.addEventListener('pointerup', confirmMove)
 
@@ -88,8 +87,7 @@ function drawBlocks(block, index) {
         if (block["orientation"] == 0) {
             blockWidth = unitWidth * block["length"]
             blockHeight = unitHeight
-        }
-        else {
+        } else {
             blockHeight = unitHeight * block["length"]
             blockWidth = unitWidth
         }
@@ -111,7 +109,7 @@ function drawBlocks(block, index) {
 
 function drawCage() {
     ctx.beginPath()
-    ctx.moveTo(canvas.width, 2*unitHeight);
+    ctx.moveTo(canvas.width, 2 * unitHeight);
     ctx.lineTo(canvas.width, 0);
     ctx.stroke();
     ctx.lineTo(0, 0);
@@ -120,35 +118,34 @@ function drawCage() {
     ctx.stroke();
     ctx.lineTo(canvas.width, canvas.height);
     ctx.stroke();
-    ctx.lineTo(canvas.width, 3*unitHeight);
+    ctx.lineTo(canvas.width, 3 * unitHeight);
     ctx.stroke();
     ctx.closePath()
 }
 
 function drawBlockTemp(block, index, x, y) {
-        var blockHeight
-        var blockWidth
-        var blockColor = "#E88300"
-        // 0 if block is horizantal 1 if vertical
-        if (block["orientation"] == 0) {
-            blockWidth = unitWidth * block["length"]
-            blockHeight = unitHeight
-        }
-        else {
-            blockHeight = unitHeight * block["length"]
-            blockWidth = unitWidth
-        }
-        // change block color to red if first block in list
-        if (index == 0) {
-            blockColor = "#DC0100"
-        }
-        ctx.beginPath()
-        ctx.rect(x * unitWidth, y * unitHeight, blockWidth, blockHeight)
-        ctx.fillStyle = blockColor
-        ctx.fill()
-        ctx.strokeStyle = '#000000';
-        ctx.strokeRect(x * unitWidth, y * unitHeight, blockWidth, blockHeight);
-        ctx.closePath()
+    var blockHeight
+    var blockWidth
+    var blockColor = "#E88300"
+    // 0 if block is horizantal 1 if vertical
+    if (block["orientation"] == 0) {
+        blockWidth = unitWidth * block["length"]
+        blockHeight = unitHeight
+    } else {
+        blockHeight = unitHeight * block["length"]
+        blockWidth = unitWidth
+    }
+    // change block color to red if first block in list
+    if (index == 0) {
+        blockColor = "#DC0100"
+    }
+    ctx.beginPath()
+    ctx.rect(x * unitWidth, y * unitHeight, blockWidth, blockHeight)
+    ctx.fillStyle = blockColor
+    ctx.fill()
+    ctx.strokeStyle = '#000000';
+    ctx.strokeRect(x * unitWidth, y * unitHeight, blockWidth, blockHeight);
+    ctx.closePath()
 }
 
 function clearGrid() {
@@ -169,8 +166,7 @@ function updateGrid(block, index) {
         grid[x][y] = index
         if (block["orientation"] == 0) {
             x++
-        }
-        else {
+        } else {
             y++
         }
     }
@@ -178,14 +174,15 @@ function updateGrid(block, index) {
 
 var initialX
 var initalY
+
 function getBlock() {
     const rect = canvas.getBoundingClientRect()
     initialX = event.clientX - rect.left
     initialY = event.clientY - rect.top
     console.log(initialX)
     console.log(initialY)
-    var selectedX = Math.floor(initialX/unitWidth)
-    var selectedY = Math.floor(initialY/unitHeight)
+    var selectedX = Math.floor(initialX / unitWidth)
+    var selectedY = Math.floor(initialY / unitHeight)
     console.log(selectedX)
     console.log(selectedY)
     selectedBlock = grid[selectedX][selectedY]
@@ -199,28 +196,28 @@ function moveBlock() {
     if (selectedBlock >= 0) {
         var leftBound = 0
         for (var lb = blocks[selectedBlock]["x"]; lb > 0; lb--) {
-            if (grid[lb-1][blocks[selectedBlock]["y"]] != -1) {
+            if (grid[lb - 1][blocks[selectedBlock]["y"]] != -1) {
                 leftBound = lb
                 break
             }
         }
         var rightBound = 6
         for (var rb = blocks[selectedBlock]["x"] + blocks[selectedBlock]["length"] - 1; rb < 5; rb++) {
-            if (grid[rb+1][blocks[selectedBlock]["y"]] != -1) {
+            if (grid[rb + 1][blocks[selectedBlock]["y"]] != -1) {
                 rightBound = rb + 1
                 break
             }
         }
         var upperBound = 0
         for (var ub = blocks[selectedBlock]["y"]; ub > 0; ub--) {
-            if (grid[blocks[selectedBlock]["x"]][ub-1] != -1) {
+            if (grid[blocks[selectedBlock]["x"]][ub - 1] != -1) {
                 upperBound = ub
                 break
             }
         }
         var lowerBound = 6
         for (var lwb = blocks[selectedBlock]["y"] + blocks[selectedBlock]["length"] - 1; lwb < 5; lwb++) {
-            if (grid[blocks[selectedBlock]["x"]][lwb+1] != -1) {
+            if (grid[blocks[selectedBlock]["x"]][lwb + 1] != -1) {
                 lowerBound = lwb + 1
                 break
             }
@@ -231,24 +228,21 @@ function moveBlock() {
         const rect = canvas.getBoundingClientRect()
         var newX = event.clientX - rect.left
         var newY = event.clientY - rect.top
-        offsetX = (newX - initialX)/unitWidth
-        offsetY = (newY - initialY)/unitHeight    
+        offsetX = (newX - initialX) / unitWidth
+        offsetY = (newY - initialY) / unitHeight
         if (blocks[selectedBlock]["orientation"] == 0) {
             tempX = blocks[selectedBlock]["x"] + offsetX
             if (tempX < leftBound) {
                 tempX = leftBound
-            }
-            else if (tempX + blocks[selectedBlock]["length"] > rightBound) {
+            } else if (tempX + blocks[selectedBlock]["length"] > rightBound) {
                 tempX = rightBound - blocks[selectedBlock]["length"]
             }
             drawBlockTemp(blocks[selectedBlock], selectedBlock, tempX, blocks[selectedBlock]["y"])
-        }
-        else {
-            tempY = blocks[selectedBlock]["y"] + offsetY  
+        } else {
+            tempY = blocks[selectedBlock]["y"] + offsetY
             if (tempY < upperBound) {
                 tempY = upperBound
-            }
-            else if (tempY + blocks[selectedBlock]["length"] > lowerBound) {
+            } else if (tempY + blocks[selectedBlock]["length"] > lowerBound) {
                 tempY = lowerBound - blocks[selectedBlock]["length"]
             }
             drawBlockTemp(blocks[selectedBlock], selectedBlock, blocks[selectedBlock]["x"], tempY)
@@ -257,6 +251,7 @@ function moveBlock() {
 }
 
 var interval
+
 function confirmMove() {
     if (selectedBlock >= 0) {
         if (blocks[selectedBlock]["orientation"] == 0) {
@@ -264,8 +259,7 @@ function confirmMove() {
                 movesTaken++
             }
             blocks[selectedBlock]["x"] = Math.round(tempX)
-        }
-        else {
+        } else {
             if (blocks[selectedBlock]["y"] != Math.round(tempY)) {
                 movesTaken++
             }
@@ -286,6 +280,7 @@ function confirmMove() {
 }
 
 var elapsed = 0
+
 function gameOver() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     blocks.forEach(drawBlocks)
@@ -298,10 +293,8 @@ function gameOver() {
         blocks.forEach(drawBlocks)
         drawCage()
         selectedBlock = -1
-        canvas.removeEventListener('pointerdown',getBlock)
+        canvas.removeEventListener('pointerdown', getBlock)
         canvas.removeEventListener('pointermove', moveBlock)
         canvas.removeEventListener('pointerup', confirmMove)
     }
 }
-
-    

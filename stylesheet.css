@@ -1,0 +1,14 @@
+canvas {
+    background: #eee;
+    display: block;
+    margin: 0 auto;
+    touch-action: none;
+}
+
+h1 {
+    text-align: center;
+    font-family: Alfa Slab One;
+    font-size: 8rem;
+    margin: 1rem;
+}
+
