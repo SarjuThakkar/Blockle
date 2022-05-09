@@ -5,6 +5,19 @@ canvas.width = 0.95 * window.innerWidth
 canvas.height = canvas.width
 let unitHeight = canvas.height / 6
 let unitWidth = canvas.width / 6
+window.onload = updateView;
+window.onresize = updateView;
+function updateView() {
+    canvas.width = 0.95 * window.innerWidth
+    canvas.height = canvas.width
+    unitHeight = canvas.height / 6
+    unitWidth = canvas.width / 6
+    blocks.forEach(drawBlocks)
+    blocks.forEach(updateGrid)
+    createEmojiBoard()
+    drawCage()
+    openModalRules()
+}
 
 var emojiBoard = ""
 var movesTaken = 0
