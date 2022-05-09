@@ -1,3 +1,4 @@
+// Set up canvas
 var canvas = document.getElementById("myCanvas")
 var ctx = canvas.getContext("2d")
 canvas.width = 0.95 * window.innerWidth
@@ -5,7 +6,9 @@ canvas.height = canvas.width
 let unitHeight = canvas.height / 6
 let unitWidth = canvas.width / 6
 
+var emojiBoard = ""
 var movesTaken = 0
+
 // State Variables
 var selectedBlock = -1
 var grid = [
@@ -95,7 +98,6 @@ var blocks = data["blocks"]
 // Initial setup
 blocks.forEach(drawBlocks)
 blocks.forEach(updateGrid)
-var emojiBoard = ""
 createEmojiBoard()
 drawCage()
 openModalRules()
@@ -372,6 +374,8 @@ span.onclick = function () {
 }
 
 var elapsed = 0
+var shareText
+var shareUrl = 'https://blockle.io'
 var shareData
 
 function gameOver() {
@@ -393,16 +397,22 @@ function gameOver() {
         document.getElementById("optimal").innerHTML = "Optimal # of Moves: " + optimalMoveNum
         document.getElementById("emoji").innerHTML = emojiBoard;
         openModal()
+        shareText = 'Blockle #' + blockleNum + '  Moves: ' + movesTaken + '\n' + emojiBoard
         shareData = {
-            text: 'Blockle #' + blockleNum + '  Moves: ' + movesTaken + '\n' + emojiBoard,
-            url: 'https://blockle.io'
+            text: shareText,
+            url: shareUrl
         }
     }
 }
 
 const btn = document.querySelector('button');
 
-// Share must be triggered by "user activation"
 btn.addEventListener('click', async () => {
-    await navigator.share(shareData)
+    try {
+        await navigator.share(shareData)
+    } catch (err) {
+        await navigator.share(shareData)
+        navigator.clipboard.writeText(shareText + shareUrl)
+        btn.innerHTML = 'copied!'
+    }
 });
