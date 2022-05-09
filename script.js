@@ -13,8 +13,6 @@ function updateView() {
     unitHeight = canvas.height / 6
     unitWidth = canvas.width / 6
     blocks.forEach(drawBlocks)
-    blocks.forEach(updateGrid)
-    createEmojiBoard()
     drawCage()
     openModalRules()
 }
