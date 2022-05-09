@@ -255,6 +255,7 @@ function getBlock() {
     var selectedX = Math.floor(initialX / unitWidth)
     var selectedY = Math.floor(initialY / unitHeight)
     selectedBlock = grid[selectedX][selectedY]
+    moveBlock(event)
 }
 
 var tempX
