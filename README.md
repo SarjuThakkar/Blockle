@@ -1,2 +1,2 @@
 # Blockle
-A daily wordle like game for a sliding puzzle game
+A daily wordle like game for a sliding block puzzle game
