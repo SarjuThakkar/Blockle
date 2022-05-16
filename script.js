@@ -35,14 +35,20 @@ var grid = [
 // First block is main red block
 // Orientation 0 for horizontal and 1 for vertical
 const data = {
-    day: 8,
-    moves: 22,
+    day: 9,
+    moves: 17,
     blocks: [
         {
             orientation: 0,
-            x: 1,
+            x: 0,
             y: 2,
             length: 2
+        },
+        {
+            orientation: 0,
+            x: 0,
+            y: 0,
+            length: 3
         },
         {
             orientation: 0,
@@ -51,53 +57,53 @@ const data = {
             length: 3
         },
         {
+            orientation: 0,
+            x: 0,
+            y: 3,
+            length: 2
+        },
+        {
             orientation: 1,
             x: 0,
-            y: 2,
-            length: 3
+            y: 4,
+            length: 2
         },
         {
             orientation: 0,
-            x: 0,
+            x: 1,
+            y: 4,
+            length: 2
+        },
+        {
+            orientation: 0,
+            x: 1,
             y: 5,
             length: 2
         },
         {
             orientation: 1,
             x: 2,
-            y: 4,
-            length: 2
-        },
-        {
-            orientation: 0,
-            x: 3,
-            y: 4,
-            length: 3
-        },
-        {
-            orientation: 0,
-            x: 4,
-            y: 5,
-            length: 2
-        },
-        {
-            orientation: 1,
-            x: 4,
-            y: 0,
-            length: 3
-        },
-        {
-            orientation: 1,
-            x: 5,
-            y: 0,
-            length: 2
-        },
-        {
-            orientation: 1,
-            x: 5,
             y: 2,
             length: 2
-        }
+        },
+        {
+            orientation: 1,
+            x: 4,
+            y: 0,
+            length: 2
+        },
+        {
+            orientation: 1,
+            x: 5,
+            y: 1,
+            length: 2
+        },
+        {
+            orientation: 1,
+            x: 4,
+            y: 3,
+            length: 2
+        } 
     ]
 }
 
