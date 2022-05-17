@@ -150,6 +150,7 @@ span.onclick = function () {
 }
 
 function drawBlocks(block, index) {
+    ctx.lineWidth = 1
     if (index != selectedBlock) {
         var blockHeight
         var blockWidth
@@ -179,6 +180,7 @@ function drawBlocks(block, index) {
 }
 
 function drawCage() {
+    ctx.lineWidth = 10 // emphasized border
     ctx.beginPath()
     ctx.moveTo(canvas.width, 2 * unitHeight);
     ctx.lineTo(canvas.width, 0);
@@ -217,6 +219,7 @@ function drawBlockTemp(block, index, x, y) {
         blockColor = "#DC0100"
     }
     ctx.beginPath()
+    ctx.lineWidth = 2 // add some emphasis on the selected block
     ctx.rect(x * unitWidth, y * unitHeight, blockWidth, blockHeight)
     ctx.fillStyle = blockColor
     ctx.fill()
