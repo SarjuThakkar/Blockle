@@ -35,32 +35,26 @@ var grid = [
 // First block is main red block
 // Orientation 0 for horizontal and 1 for vertical
 const data = {
-    day: 11,
-    moves: 15,
+    day: 12,
+    moves: 21,
     blocks: [
         {
             orientation: 0,
-            x: 0,
+            x: 3,
             y: 2,
             length: 2
         },
         {
-            orientation: 0,
+            orientation: 1,
             x: 0,
             y: 0,
             length: 3
         },
         {
-            orientation: 1,
-            x: 3,
+            orientation: 0,
+            x: 1,
             y: 0,
-            length: 2
-        },
-        {
-            orientation: 1,
-            x: 4,
-            y: 1,
-            length: 2
+            length: 3
         },
         {
             orientation: 1,
@@ -70,26 +64,38 @@ const data = {
         },
         {
             orientation: 1,
-            x: 0,
-            y: 3,
-            length: 3
+            x: 2,
+            y: 1,
+            length: 2
         },
         {
             orientation: 0,
-            x: 1,
+            x: 0,
             y: 3,
             length: 3
         },
         {
             orientation: 1,
             x: 3,
+            y: 3,
+            length: 2
+        },
+        {
+            orientation: 1,
+            x: 1,
             y: 4,
             length: 2
         },
         {
             orientation: 0,
-            x: 4,
+            x: 3,
             y: 5,
+            length: 3
+        },
+        {
+            orientation: 0,
+            x: 4,
+            y: 4,
             length: 2
         }
     ]
