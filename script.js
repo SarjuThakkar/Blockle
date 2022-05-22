@@ -34,72 +34,13 @@ var grid = [
 // Change daily inital postions
 // First block is main red block
 // Orientation 0 for horizontal and 1 for vertical
-const data = {
-    day: 14,
-    moves: 17,
-    blocks: [
-        {
-            orientation: 0,
-            x: 2,
-            y: 2,
-            length: 2
-        },
-        {
-            orientation: 0,
-            x: 0,
-            y: 1,
-            length: 2
-        },
-        {
-            orientation: 1,
-            x: 0,
-            y: 2,
-            length: 2
-        },
-        {
-            orientation: 1,
-            x: 1,
-            y: 2,
-            length: 2
-        },
-        {
-            orientation: 1,
-            x: 4,
-            y: 0,
-            length: 3
-        },
-        {
-            orientation: 1,
-            x: 2,
-            y: 3,
-            length: 2
-        },
-        {
-            orientation: 1,
-            x: 1,
-            y: 4,
-            length: 2
-        },
-        {
-            orientation: 0,
-            x: 3,
-            y: 3,
-            length: 2
-        },
-        {
-            orientation: 0,
-            x: 3,
-            y: 4,
-            length: 2
-        },
-        {
-            orientation: 0,
-            x: 2,
-            y: 5,
-            length: 3
-        }
-    ]
-}
+const gameBeginning = new Date('22 May 2022').setHours(0, 0, 0, 0);
+
+const dateIndex = (beginning, date) =>
+    Math.round((date.setHours(0, 0, 0, 0) - beginning) / 864e5)
+
+console.log(dateIndex(gameBeginning, new Date()))
+const data = boards[dateIndex(gameBeginning, new Date())]
 
 // load in data
 let blockleNum = data["day"]
