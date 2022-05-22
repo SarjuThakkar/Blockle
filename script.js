@@ -35,8 +35,8 @@ var grid = [
 // First block is main red block
 // Orientation 0 for horizontal and 1 for vertical
 const data = {
-    day: 14,
-    moves: 17,
+    day: 3,
+    moves: 25,
     blocks: [
         {
             orientation: 0,
@@ -46,47 +46,59 @@ const data = {
         },
         {
             orientation: 0,
-            x: 0,
-            y: 1,
-            length: 2
-        },
-        {
-            orientation: 1,
-            x: 0,
-            y: 2,
-            length: 2
-        },
-        {
-            orientation: 1,
             x: 1,
-            y: 2,
+            y: 0,
             length: 2
         },
         {
-            orientation: 1,
+            orientation: 0,
             x: 4,
             y: 0,
-            length: 3
+            length: 2
         },
         {
+            orientation: 0,
+            x: 0,
+            y: 1,
+            length: 3
+        },
+        // {
+        //     orientation: 1,
+        //     x: 4,
+        //     y: 1,
+        //     length: 3
+        // },
+        // {
+        //     orientation: 1,
+        //     x: 5,
+        //     y: 1,
+        //     length: 2
+        // },
+        {
             orientation: 1,
-            x: 2,
-            y: 3,
-            length: 2
+            x: 0,
+            y: 2,
+            length: 3
         },
         {
             orientation: 1,
             x: 1,
-            y: 4,
+            y: 2,
             length: 2
         },
         {
-            orientation: 0,
-            x: 3,
+            orientation: 1,
+            x: 5,
             y: 3,
             length: 2
         },
         {
+            orientation: 1,
+            x: 2,
+            y: 4,
+            length: 2
+        },
+        {
             orientation: 0,
             x: 3,
             y: 4,
@@ -94,15 +106,70 @@ const data = {
         },
         {
             orientation: 0,
-            x: 2,
+            x: 0,
             y: 5,
-            length: 3
+            length: 2
+        },
+        {
+            orientation: 0,
+            x: 4,
+            y: 5,
+            length: 2
         }
     ]
 }
 
+// leaderboard data to store
+// {"game_number": game_number, "moves_over_optimal": moves, "par": par}
+let cookiePrefix = "BlockleCookie="
+
+function readGamesFromCookie() {
+    let cookies = document.cookie.split(';');
+    for (let i = 0; i < cookies.length; i++) {
+        let cookie = cookies[i];
+        while (cookie.charAt(0) === ' ') {
+            cookie = cookie.substring(1, cookie.length);
+        }
+        // find the Blockle cookie
+        if (cookie.indexOf(cookiePrefix) === 0) {
+            return JSON.parse(cookie.substring(cookiePrefix.length, cookie.length));
+        }
+    }
+    return null;
+}
+
+function addGameToCookie(game_number, moves, optimal, par) {
+    gameData = {"game_number": game_number, "moves": moves, "optimal": optimal, "par": par}
+    games = readGamesFromCookie()
+    if (games) {
+        var foundGame = false
+        // only push game if you have a better score
+        for (const game of games) {
+            if (game.game_number == game_number) {
+                foundGame = true
+                if (game.moves >= moves) {
+                    game.game_number = game_number
+                    game.moves = moves
+                    game.optimal = optimal
+                    game.par = par
+                }
+            }
+        }
+        if (!foundGame) {
+            games.push(gameData)
+        }
+    } else {
+        games = [gameData]
+    }
+
+    const cookie = cookiePrefix + JSON.stringify(games) + ";";
+    document.cookie = cookie;
+}
+
+
 // load in data
 let blockleNum = data["day"]
+let blocklePar = data["par"] || 0
 let optimalMoveNum = data["moves"]
 var blocks = data["blocks"]
 
@@ -144,7 +211,6 @@ span.onclick = function () {
 }
 
 function drawBlocks(block, index) {
-    ctx.lineWidth = 1
     if (index != selectedBlock) {
         var blockHeight
         var blockWidth
@@ -174,7 +240,6 @@ function drawBlocks(block, index) {
 }
 
 function drawCage() {
-    ctx.lineWidth = 10 // emphasized border
     ctx.beginPath()
     ctx.moveTo(canvas.width, 2 * unitHeight);
     ctx.lineTo(canvas.width, 0);
@@ -213,7 +278,6 @@ function drawBlockTemp(block, index, x, y) {
         blockColor = "#DC0100"
     }
     ctx.beginPath()
-    ctx.lineWidth = 2 // add some emphasis on the selected block
     ctx.rect(x * unitWidth, y * unitHeight, blockWidth, blockHeight)
     ctx.fillStyle = blockColor
     ctx.fill()
@@ -407,9 +471,41 @@ function gameOver() {
         canvas.removeEventListener('pointerdown', getBlock)
         canvas.removeEventListener('pointermove', moveBlock)
         canvas.removeEventListener('pointerup', confirmMove)
-        document.getElementById("movesTaken").innerHTML = "Moves Taken: " + movesTaken
-        document.getElementById("optimal").innerHTML = "Optimal # of Moves: " + optimalMoveNum
+        document.getElementById("your_stats").innerHTML = "Your Moves: " + movesTaken
+        document.getElementById("blockle_stats").innerHTML = "Optimal: " + optimalMoveNum + "\tPar: " + blocklePar
+        document.getElementById("blockle_score").innerHTML = "Blockle Score: " + (movesTaken - optimalMoveNum - blocklePar)
         document.getElementById("emoji").innerHTML = emojiBoard;
+        addGameToCookie(blockleNum, movesTaken, optimalMoveNum, blocklePar)
+
+        var games = readGamesFromCookie()
+        var totalGames = 0
+        var totalBlockleScore = 0
+        var blockleBuckets = {
+            "0": 0,
+            "1-2": 0,
+            "3-4": 0,
+            "5+": 0,
+        }
+        for (i in games) {
+            game = games[i]
+            totalGames += 1
+            totalBlockleScore += game["moves"] - game["optimal"] - game["par"]
+            var movesOverOptimal = game["moves"] - game["optimal"]
+            if (movesOverOptimal == 0) {
+                blockleBuckets["0"] += 1
+            } else if (movesOverOptimal == 1 || movesOverOptimal == 2) {
+                blockleBuckets["1-2"] += 1
+            } else if (movesOverOptimal == 3 || movesOverOptimal == 4) {
+                blockleBuckets["3-4"] += 1
+            } else {
+                blockleBuckets["5+"] += 1
+            }
+        }
+        var averageBlockleScore = totalBlockleScore / totalGames
+
+        // todo: buckets
+        document.getElementById("all_time_total_blockle").innerHTML = "Blockle Score: " + totalBlockleScore
+        document.getElementById("all_time_average_blockle").innerHTML = "Average Blockle Score: " + averageBlockleScore
         openModal()
         shareText = 'Blockle #' + blockleNum + '  Moves: ' + movesTaken + '\n' + emojiBoard
         shareData = {
