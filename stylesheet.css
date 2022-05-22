@@ -4,11 +4,9 @@ canvas {
     margin: 0 auto;
     touch-action: none;
 }
-
 .rule {
     font-family: Roboto;
 }
-
 button {
     margin: 0 auto;
     display: block;
@@ -44,7 +42,6 @@ body {
 a {
     position: fixed;
     bottom: 0px;
-    right: 0px;
 }
 
 .fa {
@@ -54,12 +51,13 @@ a {
 #github {
     color: black;
     font-size: 3rem;
-    position: relative;
-    float: right;
 }
 
 p {
     text-align: center;
+    font-family: Alfa Slab One;
+    font-size: 1rem;
+    margin: 0.5rem;
 }
 
 #emoji {
