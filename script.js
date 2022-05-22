@@ -35,8 +35,8 @@ var grid = [
 // First block is main red block
 // Orientation 0 for horizontal and 1 for vertical
 const data = {
-    day: 3,
-    moves: 25,
+    day: 14,
+    moves: 17,
     blocks: [
         {
             orientation: 0,
@@ -46,39 +46,15 @@ const data = {
         },
         {
             orientation: 0,
-            x: 1,
-            y: 0,
-            length: 2
-        },
-        {
-            orientation: 0,
-            x: 4,
-            y: 0,
-            length: 2
-        },
-        {
-            orientation: 0,
             x: 0,
             y: 1,
-            length: 3
+            length: 2
         },
-        // {
-        //     orientation: 1,
-        //     x: 4,
-        //     y: 1,
-        //     length: 3
-        // },
-        // {
-        //     orientation: 1,
-        //     x: 5,
-        //     y: 1,
-        //     length: 2
-        // },
         {
             orientation: 1,
             x: 0,
             y: 2,
-            length: 3
+            length: 2
         },
         {
             orientation: 1,
@@ -88,14 +64,26 @@ const data = {
         },
         {
             orientation: 1,
-            x: 5,
+            x: 4,
+            y: 0,
+            length: 3
+        },
+        {
+            orientation: 1,
+            x: 2,
             y: 3,
             length: 2
         },
         {
             orientation: 1,
-            x: 2,
+            x: 1,
             y: 4,
+            length: 2
+        },
+        {
+            orientation: 0,
+            x: 3,
+            y: 3,
             length: 2
         },
         {
@@ -106,15 +94,9 @@ const data = {
         },
         {
             orientation: 0,
-            x: 0,
+            x: 2,
             y: 5,
-            length: 2
-        },
-        {
-            orientation: 0,
-            x: 4,
-            y: 5,
-            length: 2
+            length: 3
         }
     ]
 }
@@ -211,6 +193,7 @@ span.onclick = function () {
 }
 
 function drawBlocks(block, index) {
+    ctx.lineWidth = 1
     if (index != selectedBlock) {
         var blockHeight
         var blockWidth
@@ -240,6 +223,7 @@ function drawBlocks(block, index) {
 }
 
 function drawCage() {
+    ctx.lineWidth = 10 // emphasized border
     ctx.beginPath()
     ctx.moveTo(canvas.width, 2 * unitHeight);
     ctx.lineTo(canvas.width, 0);
@@ -278,6 +262,7 @@ function drawBlockTemp(block, index, x, y) {
         blockColor = "#DC0100"
     }
     ctx.beginPath()
+    ctx.lineWidth = 2 // add some emphasis on the selected block
     ctx.rect(x * unitWidth, y * unitHeight, blockWidth, blockHeight)
     ctx.fillStyle = blockColor
     ctx.fill()
