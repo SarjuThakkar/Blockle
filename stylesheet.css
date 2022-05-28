@@ -129,10 +129,9 @@ h1 {
   padding-top: 16px;
 }
 
-
 #statistics {
     display: flex;
-    margin-bottom: :;
+    margin-bottom: 1px;
 }
 
 .statistic-container {
@@ -146,7 +145,7 @@ h1 {
     align-items: center;
     justify-content: center;
     text-align: center;
-    letter-spacing: 0.05em;
+    letter-spacing: 0.05px;
     font-variant-numeric: proportional-nums;
 }
 
