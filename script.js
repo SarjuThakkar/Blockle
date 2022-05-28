@@ -5,18 +5,6 @@ canvas.width = 0.95 * window.innerWidth
 canvas.height = canvas.width
 let unitHeight = canvas.height / 6
 let unitWidth = canvas.width / 6
-window.onload = updateView;
-window.onresize = updateView;
-function updateView() {
-    canvas.width = 0.95 * window.innerWidth
-    canvas.height = canvas.width
-    unitHeight = canvas.height / 6
-    unitWidth = canvas.width / 6
-    blocks.forEach(drawBlocks)
-    drawCage()
-    openModalRules()
-}
-
 var emojiBoard = ""
 var movesTaken = 0
 
@@ -44,26 +32,15 @@ const data = boards[dateIndex(gameBeginning, new Date())]
 
 // leaderboard data to store
 // {"game_number": game_number, "moves_over_optimal": moves, "par": par}
-let cookiePrefix = "BlockleCookie="
+let blockleStorageName = "BlockleStorage"
 
-function readGamesFromCookie() {
-    let cookies = document.cookie.split(';');
-    for (let i = 0; i < cookies.length; i++) {
-        let cookie = cookies[i];
-        while (cookie.charAt(0) === ' ') {
-            cookie = cookie.substring(1, cookie.length);
-        }
-        // find the Blockle cookie
-        if (cookie.indexOf(cookiePrefix) === 0) {
-            return JSON.parse(cookie.substring(cookiePrefix.length, cookie.length));
-        }
-    }
-    return null;
+function readGamesFromStorage() {
+    return JSON.parse(localStorage.getItem(blockleStorageName))
 }
 
-function addGameToCookie(game_number, moves, optimal, par) {
+function addGameToStorage(game_number, moves, optimal, par) {
     gameData = {"game_number": game_number, "moves": moves, "optimal": optimal, "par": par}
-    games = readGamesFromCookie()
+    games = readGamesFromStorage()
     if (games) {
         var foundGame = false
         // only push game if you have a better score
@@ -79,14 +56,14 @@ function addGameToCookie(game_number, moves, optimal, par) {
             }
         }
         if (!foundGame) {
+            // 1st attempt of day
             games.push(gameData)
         }
     } else {
         games = [gameData]
     }
 
-    const cookie = cookiePrefix + JSON.stringify(games) + ";";
-    document.cookie = cookie;
+    localStorage.setItem(blockleStorageName, JSON.stringify(games));
 }
 
 
@@ -96,12 +73,25 @@ let blocklePar = data["par"] || 0
 let optimalMoveNum = data["moves"]
 var blocks = data["blocks"]
 
+// reload view
+window.onload = updateView;
+window.onresize = updateView;
+function updateView() {
+    canvas.width = 0.95 * window.innerWidth
+    canvas.height = canvas.width
+    unitHeight = canvas.height / 6
+    unitWidth = canvas.width / 6
+    blocks.forEach(drawBlocks)
+    drawCage()
+    openModal(blockleNum)
+}
+
 // Initial setup
 blocks.forEach(drawBlocks)
 blocks.forEach(updateGrid)
 createEmojiBoard()
 drawCage()
-openModalRules()
+openModal(blockleNum)
 
 
 // Handle moving
@@ -111,6 +101,24 @@ canvas.addEventListener('pointerup', confirmMove)
 
 
 // Function definitions
+function openModal(game_number) {
+    games = readGamesFromStorage()
+    var foundGame = false
+    if (games) {
+        for (const game of games) {
+            if (game.game_number == game_number) {
+                foundGame = true
+            }
+        }
+    }
+
+    if (foundGame) {
+        openModalGameOver(game_number)
+    } else {
+        openModalRules()
+    }
+}
+
 function openModalRules() {
     document.getElementById("rules").style.display = "block"
 }
@@ -355,11 +363,58 @@ function confirmMove() {
     }
 }
 
-function openModal() {
+function openModalGameOver(game_number, movesTaken=null) {
+    var games = readGamesFromStorage()
+    var optimalMoveNum, blocklePar, todaysBest = 0
+    if (games) {
+        for (const game of games) {
+            if (game.game_number == game_number) {
+                if (movesTaken == null) {
+                    movesTaken = game.moves
+                }
+                todaysBest = game.moves
+                optimalMoveNum = game.optimal
+                blocklePar = game.par
+            }
+        }
+    }
+    var totalGames = 0
+    var totalBlockleScore = 0
+    var blockleBuckets = {
+        "0": 0,
+        "1-2": 0,
+        "3-4": 0,
+        "5+": 0,
+    }
+    for (i in games) {
+        game = games[i]
+        totalGames += 1
+        totalBlockleScore += game["moves"] - game["optimal"] - game["par"]
+        var movesOverOptimal = game["moves"] - game["optimal"]
+        if (movesOverOptimal == 0) {
+            blockleBuckets["0"] += 1
+        } else if (movesOverOptimal == 1 || movesOverOptimal == 2) {
+            blockleBuckets["1-2"] += 1
+        } else if (movesOverOptimal == 3 || movesOverOptimal == 4) {
+            blockleBuckets["3-4"] += 1
+        } else {
+            blockleBuckets["5+"] += 1
+        }
+    }
+    var averageBlockleScore = totalBlockleScore / totalGames
+
+    // todo: buckets
+    document.getElementById("your_stats").innerHTML = "Your Moves: " + movesTaken
+    document.getElementById("blockle_stats").innerHTML = "Optimal: " + optimalMoveNum + "\tPar: " + blocklePar
+    document.getElementById("blockle_score").innerHTML = "Blockle Score: " + (movesTaken - optimalMoveNum - blocklePar)
+    document.getElementById("todays_best").innerHTML = "Today's Best Moves: " + todaysBest
+    document.getElementById("emoji").innerHTML = emojiBoard;
+    document.getElementById("all_time_total_blockle").innerHTML = "Blockle Score: " + totalBlockleScore
+    document.getElementById("all_time_average_blockle").innerHTML = "Average Blockle Score: " + averageBlockleScore
     document.getElementById("gameOver").style.display = "block"
 }
 
-function closeModal() {
+function closeModalGameOver() {
     document.getElementById("gameOver").style.display = "none"
 }
 
@@ -368,7 +423,7 @@ var modal = document.getElementById('gameOver');
 // When the user clicks anywhere outside of the modal, close it
 window.onclick = function (event) {
     if (event.target == modal) {
-        closeModal()
+        closeModalGameOver()
     }
 }
 
@@ -397,42 +452,8 @@ function gameOver() {
         canvas.removeEventListener('pointerdown', getBlock)
         canvas.removeEventListener('pointermove', moveBlock)
         canvas.removeEventListener('pointerup', confirmMove)
-        document.getElementById("your_stats").innerHTML = "Your Moves: " + movesTaken
-        document.getElementById("blockle_stats").innerHTML = "Optimal: " + optimalMoveNum + "\tPar: " + blocklePar
-        document.getElementById("blockle_score").innerHTML = "Blockle Score: " + (movesTaken - optimalMoveNum - blocklePar)
-        document.getElementById("emoji").innerHTML = emojiBoard;
-        addGameToCookie(blockleNum, movesTaken, optimalMoveNum, blocklePar)
-
-        var games = readGamesFromCookie()
-        var totalGames = 0
-        var totalBlockleScore = 0
-        var blockleBuckets = {
-            "0": 0,
-            "1-2": 0,
-            "3-4": 0,
-            "5+": 0,
-        }
-        for (i in games) {
-            game = games[i]
-            totalGames += 1
-            totalBlockleScore += game["moves"] - game["optimal"] - game["par"]
-            var movesOverOptimal = game["moves"] - game["optimal"]
-            if (movesOverOptimal == 0) {
-                blockleBuckets["0"] += 1
-            } else if (movesOverOptimal == 1 || movesOverOptimal == 2) {
-                blockleBuckets["1-2"] += 1
-            } else if (movesOverOptimal == 3 || movesOverOptimal == 4) {
-                blockleBuckets["3-4"] += 1
-            } else {
-                blockleBuckets["5+"] += 1
-            }
-        }
-        var averageBlockleScore = totalBlockleScore / totalGames
-
-        // todo: buckets
-        document.getElementById("all_time_total_blockle").innerHTML = "Blockle Score: " + totalBlockleScore
-        document.getElementById("all_time_average_blockle").innerHTML = "Average Blockle Score: " + averageBlockleScore
-        openModal()
+        addGameToStorage(blockleNum, movesTaken, optimalMoveNum, blocklePar)
+        openModalGameOver(blockleNum, movesTaken)
         shareText = 'Blockle #' + blockleNum + '  Moves: ' + movesTaken + '\n' + emojiBoard
         shareData = {
             text: shareText,

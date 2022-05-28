@@ -58,13 +58,13 @@ a {
     float: right;
 }
 
-p {
-    text-align: center;
-}
-
 #emoji {
     white-space: pre-line;
     line-height: 1rem;
+}
+
+p {
+    text-align: center;
 }
 
 h1 {
