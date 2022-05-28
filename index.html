@@ -40,17 +40,62 @@
     <div id="gameOver" class="modal">
         <div class="modal-content">
             <span class="close">&times;</span>
-            <h3><u>Game Statistics</u></h3>
-            <h4 id="your_stats">Your Moves: 0</h4>
-            <p id="todays_best">Today's Best Moves: 0</p>
-            <p id="blockle_stats">Optimal: 0 Par: 0</p>
-            <h2 id="blockle_score">Blockle Score: 0</h2>
-            <div class="all-time-leaderboard">
-                <h3><u>All-Time Statistics</u></h3>
-                <p id="all_time_total_blockle">Blockle Score: 0</p>
-                <p id="all_time_average_blockle">Average Blockle Score: 0</p>
+            <div class="container">
+                <div>
+                    <h2>STATISTICS</h2>
+                </div>
+                <div id="statistics">
+                  <div class="statistic-container">
+                    <div class="statistic" id="statistic_blockle_num">0</div>
+                    <div class="label">Blockle Game #</div>
+                  </div>
+
+                  <div class="statistic-container">
+                    <div class="statistic" id="statistic_optimal">0</div>
+                    <div class="label">Optimal</div>
+                  </div>
+
+                  <div class="statistic-container">
+                    <div class="statistic" id="statistic_par">0</div>
+                    <div class="label">Par</div>
+                  </div>
+
+                  <div class="statistic-container">
+                    <div class="statistic" id="statistic_your_score">0</div>
+                    <div class="label">Your Score</div>
+                  </div>
+                </div>
+                <div>
+                    <br></br>
+                    <h1 id="win_status">TRY AGAIN!</h1>
+                    <br></br>
+                </div>
+                <div>
+                    <h2>ALL-TIME STATISTICS</h2>
+                </div>
+                <div id="statistics">
+                  <div class="statistic-container">
+                    <div class="statistic" id="statistic_played">0</div>
+                    <div class="label">Played</div>
+                  </div>
+
+                  <div class="statistic-container">
+                    <div class="statistic" id="statistic_win_percent">0</div>
+                    <div class="label">Win %</div>
+                  </div>
+
+<!--                   <div class="statistic-container">
+                    <div class="statistic" id="statistic_current_streak">0</div>
+                    <div class="label">Current Streak</div>
+                  </div>
+
+                  <div class="statistic-container">
+                    <div class="statistic" id="statistic_max_streak">0</div>
+                    <div class="label">Max Streak</div>
+                  </div> -->
+                </div>
             </div>
-            <p id="emoji">boardEmoji</p>
+            <br></br>
             <button type="button">Share</button>
         </div>
     </div>
