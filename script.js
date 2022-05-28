@@ -27,7 +27,6 @@ const gameBeginning = new Date('22 May 2022').setHours(0, 0, 0, 0);
 const dateIndex = (beginning, date) =>
     Math.round((date.setHours(0, 0, 0, 0) - beginning) / 864e5)
 
-console.log(dateIndex(gameBeginning, new Date()))
 const data = boards[dateIndex(gameBeginning, new Date())]
 
 // leaderboard data to store
@@ -363,15 +362,12 @@ function confirmMove() {
     }
 }
 
-function openModalGameOver(game_number, movesTaken=null) {
+function openModalGameOver(game_number) {
     var games = readGamesFromStorage()
     var optimalMoveNum, blocklePar, todaysBest = 0
     if (games) {
         for (const game of games) {
             if (game.game_number == game_number) {
-                if (movesTaken == null) {
-                    movesTaken = game.moves
-                }
                 todaysBest = game.moves
                 optimalMoveNum = game.optimal
                 blocklePar = game.par
@@ -379,38 +375,32 @@ function openModalGameOver(game_number, movesTaken=null) {
         }
     }
     var totalGames = 0
-    var totalBlockleScore = 0
-    var blockleBuckets = {
-        "0": 0,
-        "1-2": 0,
-        "3-4": 0,
-        "5+": 0,
-    }
+    var gamesWon = 0
     for (i in games) {
         game = games[i]
         totalGames += 1
-        totalBlockleScore += game["moves"] - game["optimal"] - game["par"]
-        var movesOverOptimal = game["moves"] - game["optimal"]
-        if (movesOverOptimal == 0) {
-            blockleBuckets["0"] += 1
-        } else if (movesOverOptimal == 1 || movesOverOptimal == 2) {
-            blockleBuckets["1-2"] += 1
-        } else if (movesOverOptimal == 3 || movesOverOptimal == 4) {
-            blockleBuckets["3-4"] += 1
-        } else {
-            blockleBuckets["5+"] += 1
+        if((game["moves"] - game["optimal"] - game["par"]) <= 0) {
+            gamesWon += 1
         }
     }
-    var averageBlockleScore = totalBlockleScore / totalGames
 
-    // todo: buckets
-    document.getElementById("your_stats").innerHTML = "Your Moves: " + movesTaken
-    document.getElementById("blockle_stats").innerHTML = "Optimal: " + optimalMoveNum + "\tPar: " + blocklePar
-    document.getElementById("blockle_score").innerHTML = "Blockle Score: " + (movesTaken - optimalMoveNum - blocklePar)
-    document.getElementById("todays_best").innerHTML = "Today's Best Moves: " + todaysBest
-    document.getElementById("emoji").innerHTML = emojiBoard;
-    document.getElementById("all_time_total_blockle").innerHTML = "Blockle Score: " + totalBlockleScore
-    document.getElementById("all_time_average_blockle").innerHTML = "Average Blockle Score: " + averageBlockleScore
+    document.getElementById("statistic_blockle_num").innerHTML = game_number
+    document.getElementById("statistic_optimal").innerHTML = optimalMoveNum
+    document.getElementById("statistic_par").innerHTML = optimalMoveNum + blocklePar
+    document.getElementById("statistic_your_score").innerHTML = todaysBest
+
+    document.getElementById("statistic_played").innerHTML = totalGames
+    document.getElementById("statistic_win_percent").innerHTML = Math.round((gamesWon / totalGames) * 100)
+    // document.getElementById("statistic_current_streak").innerHTML = optimalMoveNum + blocklePar
+    // document.getElementById("statistic_max_streak").innerHTML = todaysBest
+    if(todaysBest <= (optimalMoveNum + blocklePar)) {
+        document.getElementById("win_status").innerHTML = "WINNER!"
+        document.getElementById("win_status").style.color = "#2c974b"
+    } else {
+        document.getElementById("win_status").innerHTML = "TRY AGAIN!"
+        document.getElementById("win_status").style.color = "red"
+    }
+
     document.getElementById("gameOver").style.display = "block"
 }
 
@@ -453,7 +443,7 @@ function gameOver() {
         canvas.removeEventListener('pointermove', moveBlock)
         canvas.removeEventListener('pointerup', confirmMove)
         addGameToStorage(blockleNum, movesTaken, optimalMoveNum, blocklePar)
-        openModalGameOver(blockleNum, movesTaken)
+        openModalGameOver(blockleNum)
         shareText = 'Blockle #' + blockleNum + '  Moves: ' + movesTaken + '\n' + emojiBoard
         shareData = {
             text: shareText,
