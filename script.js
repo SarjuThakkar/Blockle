@@ -449,7 +449,9 @@ function gameOver() {
         canvas.removeEventListener('pointermove', moveBlock)
         canvas.removeEventListener('pointerup', confirmMove)
         addGameToStorage(blockleNum, movesTaken, optimalMoveNum, blocklePar)
-        openModalGameOver(blockleNum)
+        // reload will auto add the game over modal
+        window.location.reload()
+        // openModalGameOver(blockleNum)
     }
 }
 
