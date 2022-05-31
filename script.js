@@ -401,6 +401,12 @@ function openModalGameOver(game_number) {
         document.getElementById("win_status").style.color = "red"
     }
 
+    shareText = 'Blockle #' + game_number + '  Moves: ' + todaysBest + '\n' + emojiBoard
+    shareData = {
+        text: shareText,
+        url: shareUrl
+    }
+
     document.getElementById("gameOver").style.display = "block"
 }
 
@@ -444,22 +450,17 @@ function gameOver() {
         canvas.removeEventListener('pointerup', confirmMove)
         addGameToStorage(blockleNum, movesTaken, optimalMoveNum, blocklePar)
         openModalGameOver(blockleNum)
-        shareText = 'Blockle #' + blockleNum + '  Moves: ' + movesTaken + '\n' + emojiBoard
-        shareData = {
-            text: shareText,
-            url: shareUrl
-        }
     }
 }
 
-const btn = document.querySelector('button');
+const btn_share = document.getElementById('button_share');
 
-btn.addEventListener('click', async () => {
+btn_share.addEventListener('click', async () => {
     try {
         await navigator.share(shareData)
     } catch (err) {
         await navigator.share(shareData)
         navigator.clipboard.writeText(shareText + shareUrl)
-        btn.innerHTML = 'copied!'
+        btn_share.innerHTML = 'copied!'
     }
 });
