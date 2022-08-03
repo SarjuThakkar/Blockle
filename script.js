@@ -1,7 +1,7 @@
 // Set up canvas
 var canvas = document.getElementById("myCanvas")
 var ctx = canvas.getContext("2d")
-canvas.width = 0.95 * window.innerWidth
+canvas.width = Math.min(700, 0.95 * window.innerWidth)
 canvas.height = canvas.width
 let unitHeight = canvas.height / 6
 let unitWidth = canvas.width / 6
@@ -76,7 +76,7 @@ var blocks = data["blocks"]
 window.onload = updateView;
 window.onresize = updateView;
 function updateView() {
-    canvas.width = 0.95 * window.innerWidth
+    canvas.width = Math.min(700, 0.95 * window.innerWidth)
     canvas.height = canvas.width
     unitHeight = canvas.height / 6
     unitWidth = canvas.width / 6
@@ -97,6 +97,7 @@ openModal(blockleNum)
 canvas.addEventListener('pointerdown', getBlock)
 canvas.addEventListener('pointermove', moveBlock)
 canvas.addEventListener('pointerup', confirmMove)
+canvas.addEventListener('mouseout', confirmMove)
 
 
 // Function definitions
@@ -336,6 +337,7 @@ function moveBlock() {
 var interval
 
 function confirmMove() {
+    console.log('called', selectedBlock)
     if (selectedBlock >= 0) {
         if (blocks[selectedBlock]["orientation"] == 0) {
             if (blocks[selectedBlock]["x"] != Math.round(tempX)) {
@@ -448,6 +450,7 @@ function gameOver() {
         canvas.removeEventListener('pointerdown', getBlock)
         canvas.removeEventListener('pointermove', moveBlock)
         canvas.removeEventListener('pointerup', confirmMove)
+        canvas.removeEventListener('mouseout', confirmMove)
         addGameToStorage(blockleNum, movesTaken, optimalMoveNum, blocklePar)
         // reload will auto add the game over modal
         setTimeout(()=>{
