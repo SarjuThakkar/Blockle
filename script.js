@@ -337,7 +337,6 @@ function moveBlock() {
 var interval
 
 function confirmMove() {
-    console.log('called', selectedBlock)
     if (selectedBlock >= 0) {
         if (blocks[selectedBlock]["orientation"] == 0) {
             if (blocks[selectedBlock]["x"] != Math.round(tempX)) {
