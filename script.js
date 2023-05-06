@@ -22,7 +22,7 @@ var grid = [
 // Change daily inital postions
 // First block is main red block
 // Orientation 0 for horizontal and 1 for vertical
-const gameBeginning = new Date('22 May 2022').setHours(0, 0, 0, 0);
+const gameBeginning = new Date('06 May 2023').setHours(0, 0, 0, 0);
 
 const dateIndex = (beginning, date) =>
     Math.round((date.setHours(0, 0, 0, 0) - beginning) / 864e5)
@@ -67,7 +67,7 @@ function addGameToStorage(game_number, moves, optimal, par) {
 
 
 // load in data
-let blockleNum = data["day"]
+let blockleNum = data["day"] + 349
 let blocklePar = data["par"] || 0
 let optimalMoveNum = data["moves"]
 var blocks = data["blocks"]
