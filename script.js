@@ -22,7 +22,7 @@ var grid = [
 // Change daily inital postions
 // First block is main red block
 // Orientation 0 for horizontal and 1 for vertical
-const gameBeginning = new Date('22 April 2025').setHours(0, 0, 0, 0);
+const gameBeginning = new Date('21 April 2025').setHours(0, 0, 0, 0);
 
 const dateIndex = (beginning, date) =>
     Math.round((date.setHours(0, 0, 0, 0) - beginning) / 864e5)
