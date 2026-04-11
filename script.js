@@ -67,7 +67,7 @@ function addGameToStorage(game_number, moves, optimal, par) {
 
 
 // load in data
-let blockleNum = data["day"] + 1055
+let blockleNum = data["day"] + 1355
 let blocklePar = data["par"] || 0
 let optimalMoveNum = data["moves"]
 var blocks = data["blocks"]
